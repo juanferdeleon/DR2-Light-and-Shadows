@@ -11,21 +11,24 @@ Raytracer Engine
 from gl import *
 from texture import Texture
 from obj import ObjReader
-from sphere import Sphere, Material
+from sphere import Sphere, Material, PointLight, AmbientLight
 
 if __name__ == '__main__':
     '''Main Program'''
 
-    snow = Material(diffuse = color(224, 224, 224))
-    buttons = Material(diffuse = color(112, 112, 112 ))
-    smile = Material(diffuse = color(0, 0, 0))
-    carrot = Material(diffuse = color(255, 92, 57))
-    eye = Material(diffuse = color(153, 153, 153))
+    snow = Material(diffuse = color(224, 224, 224), spec = 32)
+    buttons = Material(diffuse = color(112, 112, 112 ), spec = 64)
+    smile = Material(diffuse = color(0, 0, 0), spec = 32)
+    carrot = Material(diffuse = color(255, 92, 57), spec = 16)
+    eye = Material(diffuse = color(153, 153, 153), spec = 128)
 
 
     width = 500
     height = 300
     r = Raytracer(width,height)
+
+    r.pointLight = PointLight(position = V3(-2,2,0), intensity = 1)
+    r.ambientLight = AmbientLight(strength = 0.1)
 
     # BODY
     r.scene.append( Sphere(V3(0, 0.80, -5), 0.60, snow) ) #HEAD
