@@ -16,15 +16,15 @@ from sphere import Sphere, Material, PointLight, AmbientLight
 if __name__ == '__main__':
     '''Main Program'''
 
-    snow = Material(diffuse = color(224, 224, 224), spec = 32)
-    buttons = Material(diffuse = color(112, 112, 112 ), spec = 64)
+    snow = Material(diffuse = color(0.87, 0.87, 0.87), spec = 32)
+    buttons = Material(diffuse = color(0.43, 0.43, 0.43 ), spec = 64)
     smile = Material(diffuse = color(0, 0, 0), spec = 32)
-    carrot = Material(diffuse = color(255, 92, 57), spec = 16)
-    eye = Material(diffuse = color(153, 153, 153), spec = 128)
+    carrot = Material(diffuse = color(1, 0.36, 0.22), spec = 16)
+    eye = Material(diffuse = color(0.6, 0.6, 0.6), spec = 128)
 
 
-    width = 500
-    height = 300
+    width = 1080
+    height = 720
     r = Raytracer(width,height)
 
     r.pointLight = PointLight(position = V3(-2,2,0), intensity = 1)

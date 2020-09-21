@@ -35,7 +35,7 @@ def dword(d):
 def color(r,g,b):
     '''Set pixel color'''
 
-    return bytes([b , g , r ])
+    return bytes([int(b * 255) , int(g * 255) , int(r * 255) ])
 
 def barycentric(A, B, C, P):
     '''Convert vertices to barycentric coordinates'''
@@ -54,7 +54,7 @@ def barycentric(A, B, C, P):
     return  w, v, u
 
 BLACK = color(0,0,0)
-WHITE = color(255,255,255)
+WHITE = color(1,1,1)
 PI = 3.14159265359
 
 class Raytracer(object):
@@ -150,9 +150,9 @@ class Raytracer(object):
         be numbers in the range of 0 to 1.'''
 
         try:
-            self.rv = round(255*r)
-            self.gv = round(255*g)
-            self.bv = round(255*b)
+            self.rv = round(r)
+            self.gv = round(g)
+            self.bv = round(b)
             self.vertex_color = color(self.rv,self.gv,self.bv)
         except ValueError:
                 print('\nERROR: Please enter a number between 1 and 0\n')
@@ -162,9 +162,9 @@ class Raytracer(object):
         range of 0 to 1.'''
 
         try:
-            self.rc = round(255*r)
-            self.gc = round(255*g)
-            self.bc = round(255*b)
+            self.rc = round(r)
+            self.gc = round(g)
+            self.bc = round(b)
             self.clear_color = color(self.rc, self.gc, self.bc)
         except ValueError:
             print('\nERROR: Please enter a number between 1 and 0\n')
@@ -285,7 +285,7 @@ class Raytracer(object):
         diffuseColor = V3(0, 0, 0)
         specColor = V3(0, 0, 0)
 
-        shadow_intensity = 0
+        shadow_intensity = 0.0
 
         if self.ambientLight:
             ambientColor = V3(self.ambientLight.strength * self.ambientLight.color[2] / 255, self.ambientLight.strength * self.ambientLight.color[1] / 255, self.ambientLight.strength * self.ambientLight.color[0] / 255)
@@ -312,14 +312,15 @@ class Raytracer(object):
                 if obj is not intersect.sceneObject:
                     hit = obj.ray_intersect(intersect.point, light_dir)
                     if hit is not None and intersect.distance < magnitud(sub(self.pointLight.position, intersect.point)):
-                        shadow_intensity = 1
+                        shadow_intensity = 1.0
         
-        print(ambientColor)
-        print(shadow_intensity)
-        print(diffuseColor)
-        print(specColor)
-        print(objectColor)
-        finalColor = mul(sum(ambientColor, mul(sum(diffuseColor, specColor ), ( 1- shadow_intensity ))), objectColor)
+        difPspec = sum(diffuseColor, specColor)
+        shaInt = (1 - shadow_intensity)
+        shaIntTDifPSpec = mul(difPspec, shaInt)
+        ambPShaIntTDifPSpec = sum(ambientColor, shaIntTDifPSpec)
+        finalColor = multVect(ambPShaIntTDifPSpec, objectColor)
+        # finalColor = (ambientColor + (1 - shadow_intensity) * (diffuseColor + specColor)) * objectColor
+        # finalColor = mul(sum(ambientColor, mul(sum(diffuseColor, specColor ), ( 1- shadow_intensity ))), objectColor)
 
         r = min(1, finalColor[0])
         g = min(1, finalColor[1])

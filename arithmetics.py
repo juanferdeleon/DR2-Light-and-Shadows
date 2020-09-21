@@ -24,6 +24,10 @@ def mul(v0, k):
     '''Vector Multiplication'''
     return V3(v0.x * k, v0.y * k, v0.z * k)
 
+def multVect(v0, v1):
+    '''Multiply 2 VEC3'''
+    return V3(v0.x * v1.x, v0.y * v1.y, v0.z * v1.z)
+
 def div(v0, k):
     '''Vector Divition'''
     return V3(v0.x / k, v0.y / k, v0.z / k)
